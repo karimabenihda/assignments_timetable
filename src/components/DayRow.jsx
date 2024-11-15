@@ -50,7 +50,9 @@ const DayRow = ({ day, hours, assignments }) => {
                   dispatch(setShowAddAssignmentModal(true));
                 }}
               >
-                {assignment.title}
+                <p ><b>{assignment.group}</b></p>
+                <b className="text-gray-600">{assignment.title}</b>
+                <p className="text-gray-600">{assignment.saleName}</p>
               </td>
             );
           }
@@ -74,21 +76,20 @@ const DayRow = ({ day, hours, assignments }) => {
 
           return (
             <td
-  key={`${subHour.startTime}-${subHour.endTime}-${subHourIndex}`}
-  className="border p-2 cursor-pointer"
-  onClick={() => {
-    if (subHour.startTime > subHour.endTime) {
-      alert("Start time cannot be later than end time!"); 
-      return; 
-    }
-    dispatch(setSelectedDay(day.format('YYYY-MM-DD')));
-    dispatch(setSelectedStartTime(subHour.startTime));
-    dispatch(setSelectedEndTime(subHour.endTime));
-    dispatch(setShowAddAssignmentModal(true));
-  }}
->
-</td>
-
+              key={`${subHour.startTime}-${subHour.endTime}-${subHourIndex}`}
+              className="border p-2 cursor-pointer"
+              onClick={() => {
+                if (subHour.startTime > subHour.endTime) {
+                  alert("Start time cannot be later than end time!"); 
+                  return; 
+                }
+                dispatch(setSelectedDay(day.format('YYYY-MM-DD')));
+                dispatch(setSelectedStartTime(subHour.startTime));
+                dispatch(setSelectedEndTime(subHour.endTime));
+                dispatch(setShowAddAssignmentModal(true));
+              }}
+            >
+            </td>
           );
         })
       ))}

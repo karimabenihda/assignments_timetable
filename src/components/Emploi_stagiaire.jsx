@@ -9,7 +9,18 @@ function Emploi_stagiaire() {
     const queryParams = new URLSearchParams(location.search);
     const intituleGroupe= queryParams.get('intituleGroupe');
     const filiere= queryParams.get('filiere');
-
+    const [formateurs, setFormateurs] = useState([]);
+  
+    useEffect(() => {
+      axios.get('http://localhost:5000/formateurs')
+        .then(response => {
+          setFormateurs(response.data); 
+        })
+        .catch(error => {
+          console.error("Error fetching formateurs: ", error);
+        });
+    }, []);
+  
   return (
 <>
 <h6 className="ofppt">
@@ -33,7 +44,7 @@ function Emploi_stagiaire() {
       </div> 
        <div className="flex-1 p-1">
       <Week/>
-      <AssignmentModal/>
+      <AssignmentModal formateurs={formateurs}/>
     </div>
     </>
   

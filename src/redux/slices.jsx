@@ -1,32 +1,88 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import dayjs from "dayjs";
 
+const API_URL = "http://localhost:8000/seances";
+
+// Async Thunks
+export const fetchAssignments = createAsyncThunk(
+  "calendar/fetchAssignments",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(API_URL);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data || "Error fetching assignments");
+    }
+  }
+);
+
+export const addAssignmentToAPI = createAsyncThunk(
+  "calendar/addAssignmentToAPI",
+  async (assignment, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(API_URL, assignment);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data || "Error adding assignment");
+    }
+  }
+);
+
+export const updateAssignmentInAPI = createAsyncThunk(
+  "calendar/updateAssignmentInAPI",
+  async (assignment, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${API_URL}/${assignment.id}`, assignment);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data || "Error updating assignment");
+    }
+  }
+);
+
+export const deleteAssignmentFromAPI = createAsyncThunk(
+  "calendar/deleteAssignmentFromAPI",
+  async (id, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+      return id; // Return the deleted ID
+    } catch (error) {
+      return rejectWithValue(error.response.data || "Error deleting assignment");
+    }
+  }
+);
+
+// Initial State
 const initialState = {
-  startOfWeek: dayjs().startOf("week").add(1, "day").format('YYYY-MM-DD'),
+  startOfWeek: dayjs().startOf("week").add(1, "day").format("YYYY-MM-DD"),
   assignments: [],
   hours: Array.from({ length: 10 }, (_, i) => {
-    const startTime = dayjs().hour(8 + i).minute(30);  
+    const startTime = dayjs().hour(8 + i).minute(30);
     return {
-      startTime: startTime.format('HH:mm'),
-      endTime: startTime.add(1, 'hour').format('HH:mm'),
+      startTime: startTime.format("HH:mm"),
+      endTime: startTime.add(1, "hour").format("HH:mm"),
       subHours: [
         {
-          startTime: startTime.format('HH:mm'),
-          endTime: startTime.add(30, 'minute').format('HH:mm'), 
+          startTime: startTime.format("HH:mm"),
+          endTime: startTime.add(30, "minute").format("HH:mm"),
         },
         {
-          startTime: startTime.add(30, 'minute').format('HH:mm'),
-          endTime: startTime.add(1, 'hour').format('HH:mm'), 
-        }
+          startTime: startTime.add(30, "minute").format("HH:mm"),
+          endTime: startTime.add(1, "hour").format("HH:mm"),
+        },
       ],
     };
   }),
   showAddAssignmentModal: false,
   selectedDay: null,
-  selectedStartTime: "", 
-  selectedEndTime: ""
+  selectedStartTime: "",
+  selectedEndTime: "",
+  loading: false,
+  error: null,
 };
 
+// Slice
 const slice = createSlice({
   name: "calendar",
   initialState,
@@ -43,29 +99,46 @@ const slice = createSlice({
     setShowAddAssignmentModal(state, action) {
       state.showAddAssignmentModal = action.payload;
     },
-    addAssignment(state, action) {
-      state.assignments.push(action.payload);
-    },
-    updateAssignment(state, action) {
-      const index = state.assignments.findIndex((event) => event.id === action.payload.id);
-      if (index !== -1) {
-        state.assignments[index] = action.payload;
-      }
-    },
-    deleteAssignment(state, action) {
-      state.assignments = state.assignments.filter((event) => event.id !== action.payload.id);
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchAssignments.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAssignments.fulfilled, (state, action) => {
+        state.loading = false;
+        state.assignments = action.payload;
+      })
+      .addCase(fetchAssignments.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(addAssignmentToAPI.fulfilled, (state, action) => {
+        state.assignments.push(action.payload);
+      })
+      .addCase(updateAssignmentInAPI.fulfilled, (state, action) => {
+        const index = state.assignments.findIndex(
+          (assignment) => assignment.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.assignments[index] = action.payload;
+        }
+      })
+      .addCase(deleteAssignmentFromAPI.fulfilled, (state, action) => {
+        state.assignments = state.assignments.filter(
+          (assignment) => assignment.id !== action.payload
+        );
+      });
   },
 });
 
-export const { 
+
+export const {
   setSelectedDay,
   setSelectedStartTime,
   setSelectedEndTime,
   setShowAddAssignmentModal,
-  addAssignment,
-  updateAssignment,
-  deleteAssignment 
 } = slice.actions;
 
 export default slice.reducer;
