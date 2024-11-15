@@ -73,7 +73,7 @@ function DisplayGroups() {
               </p>
               <p>
 
-              <Link  to={`/emploi_stagiaire?groupe=${group.intituleGroupe}&filiere=${group.filiere}`}
+              <Link  to={`/emploi_stagiaire?groupe=${group?.intituleGroupe}&filiere=${group?.filiere}`}
    style={{
                     textDecoration: 'none',
                     color: '#007bff',
