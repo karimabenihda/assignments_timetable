@@ -1,0 +1,79 @@
+{
+    "seances": [
+      {
+        "id_seance": 1462,
+        "seance": "Les bases en Algorithmique",
+        "salle": "S09",
+        "groupe": "DD 101",
+        "filiere": "Développement Digital",
+        "formateur": "Dr. Ahmed",
+        "time": ["08:30", "11:00"],
+        "day": "Monday"
+      },
+      {
+        "id_seance": 345672,
+        "salle": "S02",
+        "groupe": "AA 201",
+        "filiere": "Assistant Administratif",
+        "formateur": "Mme. Sarah",
+        "time": ["10:30", "13:30"]
+      },
+      {
+        "id_seance": 98763,
+        "salle": "S02",
+        "groupe": "ID 101",
+        "filiere": "infrastructure degital",
+        "formateur": "M. Karim",
+        "time": ["13:00", "15:30"]
+      },
+      {
+        "id_seance": 200984,
+        "salle": "info03",
+        "groupe": "DDOWFS 201",
+        "filiere": "Développement Digital",
+        "formateur": "Dr. Leila",
+        "time": ["13:30", "18:30"]
+      },
+      {
+        "id_seance": 123456,
+        "seance": "Introduction to Web Development",
+        "salle": "A101",
+        "groupe": "Groupe A",
+        "filiere": "Informatique",
+        "formateur": "M. Ali",
+        "time": ["08:00", "10:30"],
+        "day": "Tuesday"
+      },
+      {
+        "id_seance": 789012,
+        "seance": "Data Structures and Algorithms",
+        "salle": "B202",
+        "groupe": "Groupe B",
+        "filiere": "Informatique",
+        "formateur": "Dr. Hassan",
+        "time": ["09:00", "12:00"],
+        "day": "Wednesday"
+      },
+      {
+        "id_seance": 345678,
+        "seance": "Machine Learning",
+        "salle": "S03",
+        "groupe": "AI 101",
+        "filiere": "Intelligence Artificielle",
+        "formateur": "M. Samir",
+        "time": ["14:00", "17:00"],
+        "day": "Thursday"
+      },
+      {
+        "id_seance": 112233,
+        "seance": "Database Management Systems",
+        "salle": "D404",
+        "groupe": "Groupe D",
+        "filiere": "Informatique",
+        "formateur": "Mme. Nadine",
+        "time": ["08:30", "11:30"],
+        "day": "Friday"
+      }
+    ]
+  }
+  

@@ -1,4 +1,3 @@
-// Week.jsx
 import React from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
@@ -12,6 +11,7 @@ export default function Week() {
   const assignments = useSelector((state) => state.calendar.assignments);
 
   return (
+    <>
     <div className="overflow-x-auto p-2">
       <div className="inline-block min-w-full overflow-hidden rounded-lg border border-gray-300 shadow-md">
         <table className="min-w-full border-collapse text-center text-xs">
@@ -28,15 +28,16 @@ export default function Week() {
           <tbody>
             {daysOfWeek.map((day, dayIndex) => (
               <DayRow
-                key={dayIndex}
-                day={day}
-                hours={hours}
-                assignments={assignments}
+              key={dayIndex}
+              day={day}
+              hours={hours}
+              assignments={assignments}
               />
             ))}
           </tbody>
         </table>
       </div>
     </div>
+            </>
   );
 }

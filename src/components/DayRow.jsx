@@ -14,11 +14,10 @@ const DayRow = ({ day, hours, assignments }) => {
 
   return (
     <tr>
-      <td className="px-1 py-5 border font-semibold text-gray-700">
+      <td className="px-1 py-3 border font-semibold text-gray-700">
         {day.format('dddd')}
       </td>
       {hours.map((hour, hourIndex) => {
-        // Check if an assignment starts at this hour
         const assignment = assignments.find(
           (assignment) =>
             assignment.day === day.format('YYYY-MM-DD') &&

@@ -1,0 +1,26 @@
+{
+    "formateurs": [
+      {
+        "code_formateur": "F001",
+        "full_name": "John Doe",
+        "modules": ["React", "JavaScript", "HTML & CSS"],
+        "email": "john.doe@example.com",
+        "phone": "+123456789"
+      },
+      {
+        "code_formateur": "F002",
+        "full_name": "Jane Smith",
+        "modules": ["Node.js", "Express", "MongoDB"],
+        "email": "jane.smith@example.com",
+        "phone": "+987654321"
+      },
+      {
+        "code_formateur": "F003",
+        "full_name": "Alice Johnson",
+        "modules": ["Python", "Django", "Machine Learning"],
+        "email": "alice.johnson@example.com",
+        "phone": "+1122334455"
+      }
+    ]
+  }
+  

@@ -1,0 +1,45 @@
+{
+    "groupe": [
+      {
+        "codeGroupe": "1",
+        "niveau": "1A",
+        "intituleGroupe": "DD101",
+        "filiere": "Devloppement Digital",
+        "modules": "Modules",
+        "secteur":"degital",
+        "emploiDuTemps": "TimeTable",
+        "liste": "Liste"
+      },
+      {
+        "codeGroupe": "2",
+        "niveau": "2A",
+        "intituleGroupe": "DEVOWFS201",
+        "filiere": "Devloppement Digital",
+        "modules": "Modules",
+        "secteur":"degital",
+        "emploiDuTemps": "TimeTable",
+        "liste": "Liste"
+      },
+      {
+        "codeGroupe": "3",
+        "niveau": "1A",
+        "intituleGroupe": "ID101",
+        "filiere": "Infrastructure Digital",
+        "modules": "Modules",
+        "secteur":"degital",
+        "emploiDuTemps": "TimeTable",
+        "liste": "Liste"
+      },
+      {
+        "codeGroupe": "1",
+        "niveau": "1A",
+        "intituleGroupe": "GE101",
+        "filiere": "Gestion d'Entreprise",
+        "secteur": "Business Services",
+        "modules": "Management, Marketing, Finance, HR",
+        "emploiDuTemps": "Weekdays, 9 AM - 5 PM",
+        "liste": "Attendance List"
+      }
+      
+    ]
+  }
