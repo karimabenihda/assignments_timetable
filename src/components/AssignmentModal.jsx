@@ -1,10 +1,11 @@
+// assignment.jsx
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setShowAddAssignmentModal,
   addAssignmentToAPI,
-  updateAssignmentInAPI,
-  deleteAssignmentFromAPI,
+  deleteAssignment,
+  updateAssignment,
 } from "../redux/slices";
 
 export default function AssignmentModal({ groups }) {
@@ -65,13 +66,13 @@ export default function AssignmentModal({ groups }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!assignmentData.title || !assignmentData.startTime || !assignmentData.endTime) {
+    if (!assignmentData.title || !assignmentData.startTime || !assignmentData.endTime || !assignmentData.group) {
       alert("Please fill in all required fields.");
       return;
     }
 
     if (assignmentData.id) {
-      dispatch(updateAssignmentInAPI({ ...assignmentData, day: selectedDay }));
+      dispatch(updateAssignment({ ...assignmentData, day: selectedDay }));
     } else {
       dispatch(
         addAssignmentToAPI({ ...assignmentData, day: selectedDay, id: Date.now() })
@@ -82,7 +83,7 @@ export default function AssignmentModal({ groups }) {
 
   const handleDelete = () => {
     if (assignmentData.id) {
-      dispatch(deleteAssignmentFromAPI(assignmentData.id));
+      dispatch(deleteAssignment(assignmentData.id));
       handleClose();
     }
   };
@@ -108,7 +109,7 @@ export default function AssignmentModal({ groups }) {
         className="bg-white rounded-lg shadow-2xl w-1/3 p-4"
         onSubmit={handleSubmit}
       >
-        <header className="flex justify-between items-center border-b pb-2 mb-4">
+        <header className="flex justify-between items-center border-b pb-2 mb-2">
           <h2 className="text-xl font-semibold">
             {assignmentData.id ? "Edit Assignment" : "Add Assignment"}
           </h2>
@@ -121,7 +122,7 @@ export default function AssignmentModal({ groups }) {
           </button>
         </header>
 
-        <div className="mb-4">
+        <div className="mb-2">
           <input
             type="text"
             name="title"
@@ -135,7 +136,7 @@ export default function AssignmentModal({ groups }) {
           />
         </div>
 
-        <div className="mb-4">
+        <div className="mb-2">
           <input
             type="text"
             name="saleName"
@@ -155,13 +156,11 @@ export default function AssignmentModal({ groups }) {
             onChange={(e) =>
               setAssignmentData({ ...assignmentData, startTime: e.target.value })
             }
-            required
-            className="block w-full mt-2"
+            className="w-full py-2 px-4 border-2 border-gray-300 rounded-lg"
           >
-            <option value="">Select Start Time</option>
-            {timeSlots.map((slot, index) => (
-              <option key={index} value={slot.startTime}>
-                {slot.startTime}
+            {timeSlots.map((slot) => (
+              <option key={slot.startTime} value={slot.startTime}>
+                {slot.startTime} - {slot.endTime}
               </option>
             ))}
           </select>
@@ -174,61 +173,54 @@ export default function AssignmentModal({ groups }) {
             onChange={(e) =>
               setAssignmentData({ ...assignmentData, endTime: e.target.value })
             }
-            required
-            className="block w-full mt-2"
+            className="w-full py-2 px-4 border-2 border-gray-300 rounded-lg"
           >
-            <option value="">Select End Time</option>
-            {timeSlots.map((slot, index) => (
-              <option key={index} value={slot.endTime}>
-                {slot.endTime}
+            {timeSlots.map((slot) => (
+              <option key={slot.endTime} value={slot.endTime}>
+                {slot.startTime} - {slot.endTime}
               </option>
             ))}
           </select>
         </label>
-
         <label className="block mb-2">
-          Group:
-          <select
-            value={assignmentData.group}
-            onChange={(e) =>
-              setAssignmentData({ ...assignmentData, group: e.target.value })
-            }
-            required
-            className="block w-full mt-2"
-          >
-            <option value="">Select Group</option>
-            {groups.map((group, index) => (
-              <option key={index} value={group.intituleGroupe}>
-                {group.intituleGroupe}
-              </option>
-            ))}
-          </select>
-        </label>
+  Group:
+  <select
+    value={assignmentData.group}
+    onChange={(e) =>
+      setAssignmentData({ ...assignmentData, group: e.target.value })
+    }
+    className="w-full py-2 px-4 border-2 border-gray-300 rounded-lg"
+    required
+  >
+    <option value="">Select a group</option>
+    {groups && groups.map((group) => (
+      <option key={group.codeGroupe} value={group.intituleGroupe}>
+        {group.intituleGroupe}
+      </option>
+    ))}
+  </select>
+</label>
 
-        <footer className="flex justify-end mt-6">
+
+        <div className="flex justify-between items-center mt-2">
+        <button
+  type="submit"
+  className="bg-sky-600 text-white px-6 py-2 rounded-full shadow-md transition-all duration-300 ease-in-out transform hover:bg-sky-400 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-sky-400"
+>
+  {assignmentData.id ? "Update" : "Add"}
+</button>
+
           {assignmentData.id && (
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="px-4 py-2 bg-red-500 text-white rounded-lg mr-2"
-            >
-              Remove
-            </button>
+           <button
+           type="button"
+           onClick={handleDelete}
+           className="bg-red-700 text-white px-6 py-2 rounded-full shadow-md transition-all duration-300 ease-in-out transform hover:bg-red-400 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-300"
+         >
+           Delete
+         </button>
+         
           )}
-          {/* <button
-            type="button"
-            onClick={handleClose}
-            className="px-4 py-2 bg-gray-300 rounded-lg mr-2"
-          >
-            Cancel
-          </button> */}
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg"
-          >
-            {assignmentData.id ? "Update" : "Add"}
-          </button>
-        </footer>
+        </div>
       </form>
     </div>
   );
