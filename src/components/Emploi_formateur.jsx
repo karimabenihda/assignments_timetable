@@ -10,20 +10,33 @@ function Emploi_formateur() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const fullname = queryParams?.get('full_name');
-
-  // State to hold groups fetched from the API
+  
   const [groups, setGroups] = useState([]);
+  const [seances, setSeances] = useState([]); // State for storing seances
 
+  // Fetch groups (already in your code)
   useEffect(() => {
-    // Fetch groups from API when the component is mounted
     axios.get('http://localhost:3000/groupe')
       .then(response => {
-        setGroups(response.data); // Set groups from the API response
+        setGroups(response.data);
       })
       .catch(error => {
         console.error("Error fetching groups: ", error);
       });
   }, []);
+
+  // Fetch seances for the selected formateur
+  useEffect(() => {
+    if (fullname) {
+      axios.get(`http://localhost:8000/seances?formateur=${fullname}`)
+        .then(response => {
+          setSeances(response.data.seances); // Assuming your response contains 'seances' data
+        })
+        .catch(error => {
+          console.error("Error fetching seances: ", error);
+        });
+    }
+  }, [fullname]); // Re-run the effect when fullname changes
 
   return (
     <>
@@ -43,7 +56,7 @@ function Emploi_formateur() {
         </h5>
       </div>
       <div className="flex-1 p-1">
-        <Week />
+        <Week seances={seances} /> 
         <AssignmentModal groups={groups} />
       </div>
     </>

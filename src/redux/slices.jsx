@@ -1,11 +1,10 @@
-// slice.jsx
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import dayjs from "dayjs";
 
 const API_URL = "http://localhost:8000/seances";
 
-// Async Thunks
+// Fetch assignments from the API
 export const fetchAssignments = createAsyncThunk(
   "calendar/fetchAssignments",
   async (_, { rejectWithValue }) => {
@@ -13,11 +12,14 @@ export const fetchAssignments = createAsyncThunk(
       const response = await axios.get(API_URL);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data || "Error fetching assignments");
+      return rejectWithValue(
+        error.response?.data || "Error fetching assignments"
+      );
     }
   }
 );
 
+// Add a new assignment to the API
 export const addAssignmentToAPI = createAsyncThunk(
   "calendar/addAssignmentToAPI",
   async (assignment, { rejectWithValue }) => {
@@ -25,7 +27,9 @@ export const addAssignmentToAPI = createAsyncThunk(
       const response = await axios.post(API_URL, assignment);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data || "Error adding assignment");
+      return rejectWithValue(
+        error.response?.data || "Error adding assignment"
+      );
     }
   }
 );
@@ -58,7 +62,7 @@ const initialState = {
   error: null,
 };
 
-// Slice
+// Calendar slice
 const slice = createSlice({
   name: "calendar",
   initialState,
@@ -93,20 +97,35 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAssignments.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchAssignments.fulfilled, (state, action) => {
-        state.loading = false;
+    .addCase(fetchAssignments.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(fetchAssignments.fulfilled, (state, action) => {
+      if (action.payload) {
         state.assignments = action.payload;
-      })
-      .addCase(fetchAssignments.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
-      })
+      } else {
+        state.error = "No data returned from API";
+      }
+    })
+    .addCase(fetchAssignments.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload || "Error fetching assignments";
+    })
+    
       .addCase(addAssignmentToAPI.fulfilled, (state, action) => {
-        state.assignments.push(action.payload);
+        // Check if action.payload exists before pushing to the assignments array
+        if (action.payload) {
+          state.assignments.push(action.payload);
+        } else {
+          console.error("No payload in action:", action);
+        }
+      })
+      
+      .addCase(addAssignmentToAPI.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Error adding assignment";
       });
   },
 });

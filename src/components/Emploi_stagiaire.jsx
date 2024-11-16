@@ -46,6 +46,7 @@ function Emploi_stagiaire() {
       <Week/>
       <AssignmentModal formateurs={formateurs}/>
     </div>
+  
     </>
   
   )

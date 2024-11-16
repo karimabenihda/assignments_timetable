@@ -16,7 +16,7 @@ export default function Week() {
       <div className="inline-block min-w-full overflow-hidden rounded-lg border border-gray-300 shadow-md">
         <table className="min-w-full border-collapse text-center text-xs">
           <thead>
-            <tr>
+            <tr className=''>
               <th className="px-1 py-1 border rounded-tl-lg">Day</th>
               {hours.map((hour, index) => (
                 <th key={index} colSpan={2} className="px-1 py-1 border font-semibold">
