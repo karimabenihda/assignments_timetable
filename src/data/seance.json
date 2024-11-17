@@ -1,5 +1,5 @@
 {
-  "titles": [
+  "seance": [
     {
       "id": "1462",
       "title": "Les bases en Algorithmique",
@@ -12,110 +12,131 @@
       "endTime": "15:00"
     },
     {
-      "id": "1463",
-      "title": "Les bases en Algorithmique",
-      "salle": "info02",
-      "groupe": "DD 102",
-      "filiere": "Développement Digital",
-      "formateur": "Dr. Ahmed",
-      "day": "Tuesday",
-      "startTime": "14:30",
-      "endTime": "15:00"
+      "id": "c8bd",
+      "title": "azeaz",
+      "group": "",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "zeazeae",
+      "day": 0
     },
     {
-      "id": "1464",
-      "title": "Introduction to Programming",
-      "salle": "S10",
-      "groupe": "DD 103",
-      "filiere": "Développement Digital",
-      "formateur": "Mme. Claire",
-      "day": "Wednesday",
-      "startTime": "10:00",
-      "endTime": "12:00"
-    },
-    {
-      "id": "1465",
-      "title": "Mathematics for Engineers",
-      "salle": "S12",
-      "groupe": "GE 201",
-      "filiere": "Génie Electrique",
-      "formateur": "Dr. Leila",
-      "day": "Thursday",
+      "id": "a10a",
+      "title": "aze",
       "startTime": "09:00",
-      "endTime": "11:00"
+      "endTime": "10:00",
+      "day": 0
     },
     {
-      "id": "1466",
-      "title": "Data Structures and Algorithms",
-      "salle": "B202",
-      "groupe": "Groupe A",
-      "filiere": "Informatique",
-      "formateur": "Dr. Hassan",
-      "day": "Friday",
-      "startTime": "08:30",
-      "endTime": "10:30"
+      "id": "2bf6",
+      "title": "aze",
+      "group": "",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "aze",
+      "day": 0
     },
     {
-      "id": "1467",
-      "title": "Machine Learning",
-      "salle": "S03",
-      "groupe": "AI 101",
-      "filiere": "Intelligence Artificielle",
-      "formateur": "M. Samir",
-      "day": "Monday",
-      "startTime": "11:00",
-      "endTime": "13:00"
+      "id": "d576",
+      "title": "aze",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "aa",
+      "day": "Monday"
     },
     {
-      "id": "1468",
-      "title": "Database Management Systems",
-      "salle": "D404",
-      "groupe": "Groupe D",
-      "filiere": "Informatique",
-      "formateur": "Mme. Nadine",
-      "day": "Tuesday",
-      "startTime": "13:30",
-      "endTime": "15:30"
+      "id": "2e87",
+      "title": "aze",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "day": "Monday"
     },
     {
-      "id": "1469",
-      "title": "Artificial Intelligence",
-      "salle": "A101",
-      "groupe": "AI 102",
-      "filiere": "Intelligence Artificielle",
-      "formateur": "M. Karim",
-      "day": "Wednesday",
-      "startTime": "14:00",
-      "endTime": "16:00"
+      "id": "bc5c",
+      "title": "aze",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "aze",
+      "day": "Monday"
     },
     {
-      "id": "1470",
-      "title": "Web Development",
-      "salle": "B105",
-      "groupe": "Groupe C",
-      "filiere": "Informatique",
-      "formateur": "Mme. Sophie",
-      "day": "Thursday",
-      "startTime": "10:30",
-      "endTime": "12:30"
+      "id": "ae48",
+      "title": "azeaze",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "day": "Monday"
     },
     {
-      "id": "1471",
-      "title": "Networking Basics",
-      "salle": "S08",
-      "groupe": "NE 201",
-      "filiere": "Réseaux",
-      "formateur": "Dr. Ahmed",
-      "day": "Friday",
-      "startTime": "13:00",
-      "endTime": "15:00"
+      "id": "a44f",
+      "title": "azeaze",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "azeaze",
+      "day": "Monday"
     },
     {
-      "id": "85ea",
-      "title": "ee",
-      "day": "Monday",
-      "startTime": "09:00",
-      "endTime": "09:30"
+      "id": "6455",
+      "title": "azezae",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "zae",
+      "day": "Monday"
+    },
+    {
+      "id": "a895",
+      "title": "az",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "az",
+      "day": "Monday"
+    },
+    {
+      "id": "f94f",
+      "title": "az",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "zz",
+      "day": "Monday"
+    },
+    {
+      "id": "e04d",
+      "title": "azeaze",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "eazeza",
+      "day": "Monday"
+    },
+    {
+      "id": "6354",
+      "title": "aze",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "aze",
+      "day": "Monday"
+    },
+    {
+      "id": "81bb",
+      "title": "azeaze",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "azeazea",
+      "day": "Monday"
+    },
+    {
+      "id": "1dc1",
+      "title": "azeaz",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "azeaze",
+      "day": "Monday"
+    },
+    {
+      "id": "f610",
+      "title": "aze",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "saleName": "azeaze",
+      "day": "Monday"
     }
   ]
 }

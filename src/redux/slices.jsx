@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import dayjs from "dayjs";
 
-const API_URL = "http://localhost:8000/seances";
+const API_URL = "http://localhost:8000/seance";
 
 // Fetch assignments from the API
 export const fetchAssignments = createAsyncThunk(
@@ -10,6 +10,7 @@ export const fetchAssignments = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(API_URL);
+      console.log("Fetched assignments:", response.data); // Log the response
       return response.data;
     } catch (error) {
       return rejectWithValue(
