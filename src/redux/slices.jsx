@@ -46,16 +46,16 @@ export const fetchSeance = createAsyncThunk(
 // Async thunk to delete a seance
 export const deleteSeanceFromAPI = createAsyncThunk(
   "calendar/deleteSeanceFromAPI",
-  async (seanceId, { rejectWithValue }) => {
+  async (assignmentId, { rejectWithValue }) => {
     try {
-      // DELETE request to delete the seance by ID
-      const response = await axios.delete(`${API_URL}/seances/${seanceId}`);
-      return seanceId;  // Return the ID of the deleted seance
+      const response = await axios.delete(`${API_URL}/${assignmentId}`);
+      return assignmentId;  
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Error deleting seance");
+      return rejectWithValue(error.response?.data || "Error deleting assignment");
     }
   }
 );
+
 
 // Async thunk to update a seance
 export const updateSeanceInAPI = createAsyncThunk(

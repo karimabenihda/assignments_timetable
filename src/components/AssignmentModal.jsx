@@ -98,14 +98,14 @@ export default function AssignmentModal({ groups }) {
     };
 
     // If an assignment ID exists, update it, otherwise add a new one
-    if (assignmentData.id) {
+  // If the assignment already has an ID, update it
+if (assignmentData.id) {
+  dispatch(updateAssignment(dataToSubmit));  // Correctly dispatch the update action for assignments
+  dispatch(updateSeanceInAPI(dataToSubmit)); // Make sure this action is actually needed (i.e., it's not redundant)
+} else {
+  dispatch(addAssignmentToAPI(dataToSubmit)); // If there's no ID, it's a new assignment
+}
 
-      dispatch(updateAssignment(dataToSubmit)); 
-      dispatch(updateSeanceInAPI(dataToSubmit)); // Dispatch to update the existing assignment
-      // Dispatch to update the existing assignment
-    } else {
-      dispatch(addAssignmentToAPI(dataToSubmit)); // Dispatch to add a new assignment
-    }
 
     console.log("Submitting assignment:", dataToSubmit);
 
