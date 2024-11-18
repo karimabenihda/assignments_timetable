@@ -83,31 +83,28 @@ export default function AssignmentModal({ groups }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Check if required fields are filled
     if (!assignmentData.title || !assignmentData.startTime || !assignmentData.endTime || !assignmentData.intituleGroupe) {
       alert("Please fill in all required fields.");
       return;
     }
-
-    // Prepare data for submission
+  
     const dataToSubmit = {
       ...assignmentData,
-      day: selectedDay || formatDateToDayName(selectedDay), // Use selectedDay if not already set
-      id: assignmentData.id || uuidv4(), // Use existing ID if editing, else generate a new one
+      day: selectedDay || formatDateToDayName(selectedDay),
+      id: assignmentData.id || uuidv4(), // Use existing ID if editing
     };
-if (assignmentData.id) {
-  dispatch(updateAssignment(dataToSubmit));  // Correctly dispatch the update action for assignments
-  dispatch(updateSeanceInAPI(dataToSubmit)); // Make sure this action is actually needed (i.e., it's not redundant)
-} else {
-  dispatch(addAssignmentToAPI(dataToSubmit)); // If there's no ID, it's a new assignment
-}
-
-
-    console.log("Submitting assignment:", dataToSubmit);
-
+  
+    // If editing, update assignment and seance
+    if (assignmentData.id) {
+      dispatch(updateAssignment(dataToSubmit));
+      dispatch(updateSeanceInAPI(dataToSubmit));  // Ensure this action is needed
+    } else {
+      dispatch(addAssignmentToAPI(dataToSubmit)); // Add new assignment
+    }
+  console.log("data",dataToSubmit)
     handleClose();
   };
+  
 
   const handleDelete = () => {
     if (assignmentData.id) {

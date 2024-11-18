@@ -56,17 +56,20 @@ export const deleteSeanceFromAPI = createAsyncThunk(
   }
 );
 
-
 // Async thunk to update a seance
 export const updateSeanceInAPI = createAsyncThunk(
   "calendar/updateSeanceInAPI",
-  async (seance, { rejectWithValue }) => {
+  async (assignment, { rejectWithValue }) => {
     try {
-      // PUT request to update the seance by ID
-      const response = await axios.put(`${API_URL}/seances/${seance.id}`, seance);
-      return response.data;  // Return the updated seance data
+      const response = await axios.put(
+        `${API_URL}/${assignment.id}`,
+        assignment,
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      
+      return response.data; // Return the updated assignment
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Error updating seance");
+      return rejectWithValue(error.response?.data || "Error updating assignment");
     }
   }
 );
