@@ -12,19 +12,15 @@ function App() {
 
   return (    
   <>
-   
-    
-        <Router> 
+    <Router> 
       <Routes>
               <Route path="/" element={< Page />} /> 
               <Route path="/afficher_groupe_stagiaire" element={<DisplayGroups />} />
               <Route path="/afficher_formateur" element={<Afficher_formateur />} />
               <Route path="/emploi_formateur" element={<Emploi_formateur />} />
               <Route path="/emploi_stagiaire" element={<Emploi_stagiaire />} />
-    
-    
-    </Routes>
-        </Router>
+      </Routes>
+    </Router>
          
         </>
   )

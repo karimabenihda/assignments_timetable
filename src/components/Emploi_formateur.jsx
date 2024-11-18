@@ -9,12 +9,9 @@ import axios from 'axios';
 function Emploi_formateur() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const fullname = queryParams?.get('full_name');
-  
-  const [groups, setGroups] = useState([]);
-  const [seances, setSeances] = useState([]); // State for storing seances
+  const fullname = queryParams?.get('formateur');
+    const [groups, setGroups] = useState([]);
 
-  // Fetch groups (already in your code)
   useEffect(() => {
     axios.get('http://localhost:3000/groupe')
       .then(response => {
@@ -25,25 +22,13 @@ function Emploi_formateur() {
       });
   }, []);
 
-  // Fetch seances for the selected formateur
-  useEffect(() => {
-    if (fullname) {
-      axios.get(`http://localhost:8000/seances?formateur=${fullname}`)
-        .then(response => {
-          setSeances(response.data.seances); // Assuming your response contains 'seances' data
-        })
-        .catch(error => {
-          console.error("Error fetching seances: ", error);
-        });
-    }
-  }, [fullname]); // Re-run the effect when fullname changes
-
   return (
-    <>
+    <>      
+   
       <h6 className="ofppt">
         <img src={Logo} alt="ofppt" style={{ width: '80px', marginLeft: "30px" }} /> <br />
-        Souss-Massa <br />
-        ISTA AIT MELLOUL
+       <br />
+        
       </h6><br />
       <h1>
         <strong>Emploi du Temps</strong>
@@ -56,7 +41,7 @@ function Emploi_formateur() {
         </h5>
       </div>
       <div className="flex-1 p-1">
-        <Week seances={seances} /> 
+        <Week />
         <AssignmentModal groups={groups} />
       </div>
     </>

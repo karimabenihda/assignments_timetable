@@ -25,8 +25,8 @@ function Emploi_stagiaire() {
 <>
 <h6 className="ofppt">
         <img src={Logo} alt="ofppt" style={{ width: '90px' }} /> <br />
-        Souss-Massa <br />
-        ISTA AIT MELLOUL
+       <br />
+   
       </h6><br />
       <h1>
         <strong>Emploi du Temps</strong>

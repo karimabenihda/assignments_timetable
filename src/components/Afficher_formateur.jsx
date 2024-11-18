@@ -59,7 +59,7 @@ function AfficherFormateur() {
                   <h5 className="card-title"><strong>{formateur.full_name}</strong></h5>
                   <p><strong>Modules:</strong> {formateur.modules.join(", ")}</p>
                   <Link  
-  to={`/emploi_formateur?formateur=${formateur?.full_name}&code=${formateur?.code_formateur}`}
+  to={`/emploi_formateur?formateur=${formateur.full_name}&code=${formateur.code_formateur}`}
   style={{
     textDecoration: 'none',
     color: '#007bff',

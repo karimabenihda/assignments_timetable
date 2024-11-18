@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowAddAssignmentModal, deleteAssignment, addAssignmentToAPI } from "../redux/slices";  
+import {
+  setShowAddAssignmentModal,
+  addAssignmentToAPI,
+  deleteAssignment,
+  updateAssignment,
+  deleteSeanceFromAPI,
+updateSeanceInAPI
+} from "../redux/slices";
+import { useLocation } from "react-router";
+import { v4 as uuidv4 } from "uuid";
 
 export default function AssignmentModal({ groups }) {
   const dispatch = useDispatch();
-  
-  // Accessing necessary Redux state
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const fullname = queryParams.get("formateur");
+
   const showAddAssignmentModal = useSelector(
     (state) => state.calendar.showAddAssignmentModal
   );
   const hours = useSelector((state) => state.calendar.hours);
-  const selectedDay = useSelector((state) => state.calendar.selectedDay);  // Format of selectedDay: "2024-11-11"
+  const selectedDay = useSelector((state) => state.calendar.selectedDay);
   const selectedStartTime = useSelector(
     (state) => state.calendar.selectedStartTime
   );
@@ -18,7 +29,6 @@ export default function AssignmentModal({ groups }) {
     (state) => state.calendar.selectedEndTime
   );
   const assignments = useSelector((state) => state.calendar.assignments);
-  const error = useSelector((state) => state.calendar.error); // Redux error handling for the API request
 
   const timeSlots = hours.flatMap((hour) => hour.subHours);
 
@@ -31,27 +41,36 @@ export default function AssignmentModal({ groups }) {
 
   const [assignmentData, setAssignmentData] = useState({
     title: "",
-    teacher: "",
-    group: "",
-    nbrAssignment: "",
-    startTime: "",
-    endTime: "",
-    saleName: "",
-    day: "", // Storing the day name
+    formateur: fullname || "",
+    intituleGroupe: "",
+    startTime: selectedStartTime || "08:30",
+    endTime: selectedEndTime || "09:00",
+    salle: "",
+    day: "", // Will store the weekday string like 'Monday'
     id: null,
   });
+
+  // Convert date string to weekday name (e.g., "2024-11-19" => "Monday")
+  const formatDateToDayName = (dateString) => {
+    const date = new Date(dateString);
+    const options = { weekday: 'long' };
+    return date.toLocaleDateString('en-US', options).toLowerCase(); // Convert to lowercase for consistency
+  };
 
   useEffect(() => {
     if (showAddAssignmentModal && selectedStartTime && selectedEndTime) {
       if (existingAssignment) {
-        setAssignmentData(existingAssignment);
+        setAssignmentData({
+          ...existingAssignment,
+          day: formatDateToDayName(existingAssignment.day), // Convert day to weekday string
+        });
       } else {
         setAssignmentData((prevData) => ({
           ...prevData,
           startTime: selectedStartTime,
           endTime: selectedEndTime,
-          day: formatDateToDayName(selectedDay),  // Convert selected day to day name
           id: null,
+          day: formatDateToDayName(selectedDay), // Convert selectedDay to weekday string
         }));
       }
     }
@@ -65,30 +84,40 @@ export default function AssignmentModal({ groups }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Ensure `day` is set before submitting
-    const assignment = {
-      title: assignmentData.title,
-      day: assignmentData.day, // Storing day name
-      startTime: selectedStartTime,
-      endTime: selectedEndTime,
-    };
-
-    if (!assignment.day) {
-      console.error("Day is required.");
+    // Check if required fields are filled
+    if (!assignmentData.title || !assignmentData.startTime || !assignmentData.endTime || !assignmentData.intituleGroupe) {
+      alert("Please fill in all required fields.");
       return;
     }
 
-    if (assignment.title && assignment.day) {
-      dispatch(addAssignmentToAPI(assignment));
-      console.log("Submitting assignment:", assignment);
+    // Prepare data for submission
+    const dataToSubmit = {
+      ...assignmentData,
+      day: selectedDay || formatDateToDayName(selectedDay), // Use selectedDay if not already set
+      id: assignmentData.id || uuidv4(), // Use existing ID if editing, else generate a new one
+    };
+
+    // If an assignment ID exists, update it, otherwise add a new one
+    if (assignmentData.id) {
+
+      dispatch(updateAssignment(dataToSubmit)); 
+      dispatch(updateSeanceInAPI(dataToSubmit)); // Dispatch to update the existing assignment
+      // Dispatch to update the existing assignment
     } else {
-      console.error("Invalid data:", assignment);
+      dispatch(addAssignmentToAPI(dataToSubmit)); // Dispatch to add a new assignment
     }
+
+    console.log("Submitting assignment:", dataToSubmit);
+
+    handleClose();
   };
 
   const handleDelete = () => {
     if (assignmentData.id) {
       dispatch(deleteAssignment(assignmentData.id));
+      dispatch(deleteSeanceFromAPI(assignmentData.id));
+
+
       handleClose();
     }
   };
@@ -96,22 +125,14 @@ export default function AssignmentModal({ groups }) {
   const resetForm = () => {
     setAssignmentData({
       title: "",
-      teacher: "",
-      group: "",
-      nbrAssignment: "",
-      startTime: "",
-      endTime: "",
-      saleName: "",
-      day: "", // Reset day name
+      formateur: fullname || "",
+      intituleGroupe: "",
+      startTime: selectedStartTime || "08:30",
+      endTime: selectedEndTime || "09:00",
+      salle: "",
+      day: "", // Reset the day field
       id: null,
     });
-  };
-
-  // Function to convert date string to day name
-  const formatDateToDayName = (dateString) => {
-    const date = new Date(dateString);
-    const options = { weekday: "long" }; // Options for day name (e.g., "Monday")
-    return date.toLocaleDateString("en-US", options);
   };
 
   if (!showAddAssignmentModal) return null;
@@ -135,43 +156,41 @@ export default function AssignmentModal({ groups }) {
           </button>
         </header>
 
-        <input
-          type="text"
-          name="title"
-          placeholder="Assignment title"
-          value={assignmentData.title}
-          onChange={(e) => setAssignmentData({ ...assignmentData, title: e.target.value })}
-          className="w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none py-2 text-lg"
-          required
-        />
+        <div className="mb-2">
+          <input
+            type="text"
+            name="title"
+            placeholder="Assignment title"
+            value={assignmentData.title}
+            onChange={(e) =>
+              setAssignmentData({ ...assignmentData, title: e.target.value })
+            }
+            className="w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none py-2 text-lg"
+            required
+          />
+        </div>
 
         <div className="mb-2">
           <input
             type="text"
-            name="saleName"
-            placeholder="Sale Name"
-            value={assignmentData.saleName}
+            name="salle"
+            placeholder="Salle Name"
+            value={assignmentData.salle}
             onChange={(e) =>
-              setAssignmentData({ ...assignmentData, saleName: e.target.value })
+              setAssignmentData({ ...assignmentData, salle: e.target.value })
             }
             className="w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none py-2 text-lg"
           />
         </div>
 
-        {/* Day selection */}
+        {/* Disabled input showing the day of the week */}
         <div className="mb-2">
-          <label htmlFor="day" className="block mb-1">
-            Select Day:
-          </label>
           <input
             type="text"
-            id="day"
-            value={assignmentData.day} // Display day name
-            onChange={(e) =>
-              setAssignmentData({ ...assignmentData, day: e.target.value })
-            }
-            className="w-full border-b-2 border-gray-300 focus:border-blue-500 outline-none py-2 text-lg"
-            required disabled
+            name="day"
+            value={assignmentData.day}
+            readOnly
+            className="w-full border-b-2 border-gray-300 bg-gray-100 py-2 text-lg"
           />
         </div>
 
@@ -209,12 +228,13 @@ export default function AssignmentModal({ groups }) {
           </select>
         </label>
 
+        {/* Group Selection */}
         <label className="block mb-2">
           Group:
           <select
-            value={assignmentData.group}
+            value={assignmentData.intituleGroupe}
             onChange={(e) =>
-              setAssignmentData({ ...assignmentData, group: e.target.value })
+              setAssignmentData({ ...assignmentData, intituleGroupe: e.target.value })
             }
             className="w-full py-2 px-4 border-2 border-gray-300 rounded-lg"
             required
@@ -228,26 +248,33 @@ export default function AssignmentModal({ groups }) {
           </select>
         </label>
 
-        {error && <p className="text-red-500">{error}</p>} {/* Show error messages */}
-
-        <div className="flex justify-between items-center mt-2">
-          <button
-            type="submit"
-            className="bg-sky-600 text-white px-6 py-2 rounded-full shadow-md transition-all duration-300 ease-in-out transform hover:bg-sky-400 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-sky-400"
-          >
-            {assignmentData.id ? "Update" : "Add"}
-          </button>
-
+        <footer className="mt-4 flex justify-between">
           {assignmentData.id && (
             <button
               type="button"
               onClick={handleDelete}
-              className="bg-red-700 text-white px-6 py-2 rounded-full shadow-md transition-all duration-300 ease-in-out transform hover:bg-red-400 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="py-2 px-3 bg-red-500 hover:bg-red-700 text-white rounded-lg"
             >
               Delete
             </button>
           )}
-        </div>
+
+          <div className="space-x-2">
+            <button
+              type="button"
+              onClick={handleClose}
+              className="py-2 px-3 bg-gray-500 hover:bg-gray-700 text-white rounded-lg"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="py-2 px-3 bg-blue-500 hover:bg-blue-700 text-white rounded-lg"
+            >
+              {assignmentData.id ? "Update" : "Add"}
+            </button>
+          </div>
+        </footer>
       </form>
     </div>
   );
