@@ -96,9 +96,6 @@ export default function AssignmentModal({ groups }) {
       day: selectedDay || formatDateToDayName(selectedDay), // Use selectedDay if not already set
       id: assignmentData.id || uuidv4(), // Use existing ID if editing, else generate a new one
     };
-
-    // If an assignment ID exists, update it, otherwise add a new one
-  // If the assignment already has an ID, update it
 if (assignmentData.id) {
   dispatch(updateAssignment(dataToSubmit));  // Correctly dispatch the update action for assignments
   dispatch(updateSeanceInAPI(dataToSubmit)); // Make sure this action is actually needed (i.e., it's not redundant)
