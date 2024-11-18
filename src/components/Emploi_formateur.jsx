@@ -5,13 +5,18 @@ import Logo from '../assets/Logo.svg';
 import './emploi.css';
 import AssignmentModal from './AssignmentModal.jsx';
 import axios from 'axios';
+import { useDispatch } from "react-redux";
+import { fetchAssignments } from "../redux/slices";
 
 function Emploi_formateur() {
+  const dispatch = useDispatch();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const fullname = queryParams?.get('formateur');
-    const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [assignments, setAssignments] = useState([]);
 
+  // Fetch groups
   useEffect(() => {
     axios.get('http://localhost:3000/groupe')
       .then(response => {
@@ -22,13 +27,30 @@ function Emploi_formateur() {
       });
   }, []);
 
+  // Fetch assignments for the selected formateur
+  useEffect(() => {
+    if (fullname) {
+      axios.get(`http://localhost:8000/assignments?formateur=${fullname}`)
+        .then(response => {
+          setAssignments(response.data);
+        })
+        .catch(error => {
+          console.error("Error fetching assignments: ", error);
+        });
+    }
+  }, [fullname]);
+
+  // Redux action
+  useEffect(() => {
+    dispatch(fetchAssignments());
+  }, [dispatch]);
+
   return (
-    <>      
-   
+    <>
       <h6 className="ofppt">
         <img src={Logo} alt="ofppt" style={{ width: '80px', marginLeft: "30px" }} /> <br />
-       <br />
-        
+        Souss-Massa <br />
+        ISTA AIT MELLOUL
       </h6><br />
       <h1>
         <strong>Emploi du Temps</strong>
@@ -42,7 +64,7 @@ function Emploi_formateur() {
       </div>
       <div className="flex-1 p-1">
         <Week />
-        <AssignmentModal groups={groups} />
+        <AssignmentModal groups={groups} assignments={assignments} />
       </div>
     </>
   );

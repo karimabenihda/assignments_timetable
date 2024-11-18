@@ -81,29 +81,34 @@ export default function AssignmentModal({ groups }) {
     resetForm();
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!assignmentData.title || !assignmentData.startTime || !assignmentData.endTime || !assignmentData.intituleGroupe) {
-      alert("Please fill in all required fields.");
-      return;
-    }
+    try {
+      const dataToSubmit = {
+        ...assignmentData,
+        day: selectedDay || formatDateToDayName(selectedDay),
+        id: assignmentData.id || uuidv4(),
+      };
   
-    const dataToSubmit = {
-      ...assignmentData,
-      day: selectedDay || formatDateToDayName(selectedDay),
-      id: assignmentData.id || uuidv4(), // Use existing ID if editing
-    };
+      if (assignmentData.id) {
+        console.log('Updating assignment...');
+        await dispatch(updateAssignment(dataToSubmit));
+        await dispatch(updateSeanceInAPI(dataToSubmit));
+      } else {
+        console.log('Adding new assignment...');
+        await dispatch(addAssignmentToAPI(dataToSubmit));
+      }
   
-    // If editing, update assignment and seance
-    if (assignmentData.id) {
-      dispatch(updateAssignment(dataToSubmit));
-      dispatch(updateSeanceInAPI(dataToSubmit));  // Ensure this action is needed
-    } else {
-      dispatch(addAssignmentToAPI(dataToSubmit)); // Add new assignment
+      console.log("Submitted: ", dataToSubmit);
+      handleClose();
+    } catch (error) {
+      console.error("Submission error: ", error);
+      alert(`Error submitting assignment: ${error.message || error}`);
     }
-  console.log("data",dataToSubmit)
-    handleClose();
   };
+  
+  
+
   
 
   const handleDelete = () => {

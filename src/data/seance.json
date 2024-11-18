@@ -12,14 +12,14 @@
       "endTime": "15:30"
     },
     {
-      "id": "6baabb30-956c-4754-9147-47ff703f3f04",
-      "title": "ee",
+      "id": "b3cd2818-f55a-493f-9d9e-3d43807c3425",
+      "title": "algebre",
       "formateur": "John Doe",
-      "intituleGroupe": "GE101",
-      "startTime": "15:00",
-      "endTime": "15:30",
-      "salle": "eee",
-      "day": "Tuesday"
+      "intituleGroupe": "DEVOWFS201",
+      "startTime": "13:00",
+      "endTime": "13:30",
+      "salle": "s03",
+      "day": "2024-11-18"
     }
   ]
 }

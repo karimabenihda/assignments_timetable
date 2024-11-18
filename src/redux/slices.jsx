@@ -12,10 +12,12 @@ export const fetchAssignments = createAsyncThunk(
       const response = await axios.get(API_URL);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Error fetching assignments");
+      console.error("API Fetch Error: ", error);
+      return rejectWithValue(error.response?.data || "Error fetching assignments.");
     }
   }
 );
+
 
 // Async thunk to add a new assignment
 export const addAssignmentToAPI = createAsyncThunk(
@@ -58,21 +60,17 @@ export const deleteSeanceFromAPI = createAsyncThunk(
 
 // Async thunk to update a seance
 export const updateSeanceInAPI = createAsyncThunk(
-  "calendar/updateSeanceInAPI",
-  async (assignment, { rejectWithValue }) => {
+  "calendar/updateSeance",
+  async (updatedSeance, { rejectWithValue }) => {
     try {
-      const response = await axios.put(
-        `${API_URL}/${assignment.id}`,
-        assignment,
-        { headers: { 'Content-Type': 'application/json' } }
-      );
-      
-      return response.data; // Return the updated assignment
+      const response = await axios.put(`${API_URL}/${updatedSeance.id}`, updatedSeance);
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Error updating assignment");
+      return rejectWithValue(error.response?.data || "Error updating assignment.");
     }
   }
 );
+
 
 const initialState = {
   startOfWeek: dayjs().startOf("week").add(1, "day").format("YYYY-MM-DD"),

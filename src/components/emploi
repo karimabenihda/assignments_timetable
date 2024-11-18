@@ -1,0 +1,91 @@
+import React, { useState, useEffect } from 'react';
+import Week from './Week.jsx';
+import { useLocation } from 'react-router-dom';
+import Logo from '../assets/Logo.svg';
+import './emploi.css';
+import AssignmentModal from './AssignmentModal.jsx';
+import axios from 'axios';
+
+function Emploi_formateur() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const fullname = queryParams?.get('formateur'); // Get the formateur name from the query string
+  const [groups, setGroups] = useState([]);
+  const [assignments, setAssignments] = useState([]); // State to store formateur's assignments
+  const [showAssignments, setShowAssignments] = useState(false); // State to control when to display the assignments
+
+  // Fetch groups data (assuming it's already being used elsewhere)
+  useEffect(() => {
+    axios.get('http://localhost:3000/groupe')
+      .then(response => {
+        setGroups(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching groups: ", error);
+      });
+  }, []);
+
+  // Fetch assignments when the formateur's name is available
+  useEffect(() => {
+    if (fullname) {
+      // Fetch assignments from seance.json based on the formateur's name
+      axios.get('http://localhost:8000/assignements') // Replace with the actual path to your seance.json
+        .then(response => {
+          console.log(response.data); // Log the response to check its structure
+          const formateurAssignments = Array.isArray(response.data)
+            ? response.data.filter(assignment => assignment.formateur === fullname)
+            : []; // Ensure we only apply filter if response.data is an array
+          setAssignments(formateurAssignments); // Filter and set the assignments for the specific formateur
+          setShowAssignments(true); // Show assignments
+        })
+        .catch(error => {
+          console.error("Error fetching assignments: ", error);
+        });
+    }
+  }, [fullname]); // Dependency array ensures this runs when `fullname` changes
+
+  return (
+    <>      
+      <h6 className="ofppt">
+        <img src={Logo} alt="ofppt" style={{ width: '80px', marginLeft: "30px" }} /> <br />
+        Souss-Massa <br />
+        ISTA AIT MELLOUL
+      </h6><br />
+      <h1>
+        <strong>Emploi du Temps</strong>
+      </h1>
+      <h5>2024/2025</h5>
+      <div className="items">
+        <h5>
+          <b>Formateur: </b>
+          {fullname}
+        </h5>
+      </div>
+      
+      {/* Show assignments if available */}
+      {showAssignments && (
+        <div className="assignments-list">
+          <h4>Assignments:</h4>
+          {assignments.length > 0 ? (
+            assignments.map((assignment) => (
+              <div key={assignment.id} className="assignment-item">
+                <p><strong>{assignment.title}</strong></p>
+                <p><em>{assignment.startTime}</em></p>
+                <p><b>Time: </b>{assignment.endTime}</p>
+              </div>
+            ))
+          ) : (
+            <p>No assignments available for this formateur.</p>
+          )}
+        </div>
+      )}
+
+      <div className="flex-1 p-1">
+        <Week />
+        <AssignmentModal groups={groups} />
+      </div>
+    </>
+  );
+}
+
+export default Emploi_formateur;
