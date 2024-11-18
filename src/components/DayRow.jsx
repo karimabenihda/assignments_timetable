@@ -70,10 +70,9 @@ const DayRow = ({ day, hours, assignments }) => {
               </td>
             );
           }
-
-          // If no assignment is found, render an empty clickable cell
+          // If no assignmnd, render an empty clickable cell
           return (
-            <td
+            <td 
               key={key} // Unique key for empty cell
               className="border p-2 cursor-pointer"
               onClick={() => handleCellClick(null, subHour)} // Use helper function for empty cell
