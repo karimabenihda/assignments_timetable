@@ -10,6 +10,12 @@ export default function Week() {
   const daysOfWeek = Array.from({ length: 7 }, (_, i) => startOfWeek.add(i, 'day'));
   const assignments = useSelector((state) => state.calendar.assignments);
 
+  const formateurFromStorage = localStorage.getItem('formateur');
+
+  const filteredAssignments = formateurFromStorage
+    ? assignments.filter(assignment => assignment.formateur === formateurFromStorage)
+    : assignments;
+
   return (
     <div className="overflow-x-auto p-2">
       <div className="inline-block min-w-full overflow-hidden rounded-lg border border-gray-300 shadow-md">
@@ -30,7 +36,7 @@ export default function Week() {
                 key={dayIndex}
                 day={day}
                 hours={hours}
-                assignments={assignments}
+                assignments={filteredAssignments}  
               />
             ))}
           </tbody>

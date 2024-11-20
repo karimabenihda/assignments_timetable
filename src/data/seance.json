@@ -12,13 +12,63 @@
       "endTime": "15:30"
     },
     {
-      "id": "b3cd2818-f55a-493f-9d9e-3d43807c3425",
-      "title": "algebre",
-      "formateur": "John Doe",
+      "id": "4ccac899-24bf-44f7-8190-53715bb1ef5c",
+      "title": "azea",
+      "formateur": "Jane Smith",
       "intituleGroupe": "DEVOWFS201",
-      "startTime": "13:00",
-      "endTime": "13:30",
-      "salle": "s03",
+      "startTime": "08:30",
+      "endTime": "09:00",
+      "salle": "aze",
+      "day": "2024-11-18"
+    },
+    {
+      "id": "25eb28a2-7dce-48e7-b35e-461569bdff15",
+      "title": "ezae",
+      "formateur": "John Doe",
+      "intituleGroupe": "ID101",
+      "startTime": "08:30",
+      "endTime": "09:00",
+      "salle": "zae",
+      "day": "2024-11-18"
+    },
+    {
+      "id": "1e086636-1b64-42c2-abf5-5f528664454d",
+      "title": "aze",
+      "formateur": "John Doe",
+      "intituleGroupe": "GE101",
+      "startTime": "09:30",
+      "endTime": "10:00",
+      "salle": "aze",
+      "day": "2024-11-18"
+    },
+    {
+      "id": "0f838f67-8c10-4266-af74-f3d0b58af521",
+      "title": "aze",
+      "formateur": "John Doe",
+      "intituleGroupe": "GE101",
+      "startTime": "08:30",
+      "endTime": "09:00",
+      "salle": "aze",
+      "day": "2024-11-18"
+    },
+    {
+      "id": "30a0236e-2ee3-4d34-b138-12b0e9fde13e",
+      "title": "aze",
+      "formateur": "John Doe",
+      "intituleGroupe": "GE101",
+      "startTime": "08:30",
+      "endTime": "09:00",
+      "salle": "aze",
+      "day": "2024-11-18"
+    },
+    {
+      "id": "461d7910-1133-4707-be33-6c8fd08ed4b1",
+      "title": "zae",
+      "formateur": "Jane Smith",
+      "intituleGroupe": "DEVOWFS201",
+      "startTime": "09:00",
+      "endTime": "09:30",
+      "salle": "aze",
       "day": "2024-11-18"
     }
   ]
