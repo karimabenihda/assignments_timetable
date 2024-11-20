@@ -7,17 +7,20 @@ const API_URL = "http://localhost:8000/assignements";
 // Async thunk to fetch assignments
 export const fetchAssignments = createAsyncThunk(
   "calendar/fetchAssignments",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
       const response = await axios.get(API_URL);
-      return response.data;
+      const formateur = getState().calendar.formateur; 
+      const filteredAssignments = response.data?.assignements?.filter(
+        (assignment) => assignment.formateur === formateur
+      );
+      return filteredAssignments; // Return filtered assignments
     } catch (error) {
       console.error("API Fetch Error: ", error);
       return rejectWithValue(error.response?.data || "Error fetching assignments.");
     }
   }
 );
-
 
 // Async thunk to add a new assignment
 export const addAssignmentToAPI = createAsyncThunk(
@@ -32,46 +35,20 @@ export const addAssignmentToAPI = createAsyncThunk(
   }
 );
 
-// Async thunk to fetch seances
-export const fetchSeance = createAsyncThunk(
-  "calendar/fetchSeance",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(API_URL);
-      return response.data.assignements; // Assuming "assignements" is the key in the API response
-    } catch (error) {
-      return rejectWithValue(error.response?.data || "Error fetching seance data");
-    }
-  }
-);
-
 // Async thunk to delete a seance
 export const deleteSeanceFromAPI = createAsyncThunk(
   "calendar/deleteSeanceFromAPI",
   async (assignmentId, { rejectWithValue }) => {
     try {
       const response = await axios.delete(`${API_URL}/${assignmentId}`);
-      return assignmentId;  
+      return assignmentId;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Error deleting assignment");
     }
   }
 );
 
-// Async thunk to update a seance
-export const updateSeanceInAPI = createAsyncThunk(
-  "calendar/updateSeance",
-  async (updatedSeance, { rejectWithValue }) => {
-    try {
-      const response = await axios.put(`${API_URL}/${updatedSeance.id}`, updatedSeance);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data || "Error updating assignment.");
-    }
-  }
-);
-
-
+// Initial state
 const initialState = {
   startOfWeek: dayjs().startOf("week").add(1, "day").format("YYYY-MM-DD"),
   assignments: [],
@@ -99,9 +76,7 @@ const initialState = {
   selectedAssignment: null,
   loading: false,
   error: null,
-  seances: [], // Added state for seances
-  seanceLoading: false, // Loading state for seances
-  seanceError: null, // Error state for seances
+  formateur: localStorage.getItem("formateur") || "", 
 };
 
 const slice = createSlice({
@@ -136,18 +111,8 @@ const slice = createSlice({
         state.assignments[index] = action.payload;
       }
     },
-    // Reducers for seances
-    addSeance(state, action) {
-      state.seances.push(action.payload);
-    },
-    deleteSeance(state, action) {
-      state.seances = state.seances.filter((seance) => seance.id !== action.payload);
-    },
-    updateSeance(state, action) {
-      const index = state.seances.findIndex((seance) => seance.id === action.payload.id);
-      if (index !== -1) {
-        state.seances[index] = action.payload;
-      }
+    setFormateur(state, action) {
+      state.formateur = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -168,33 +133,6 @@ const slice = createSlice({
       .addCase(addAssignmentToAPI.fulfilled, (state, action) => {
         state.assignments.push(action.payload);
       });
-
-    // Seance Thunks
-    builder
-      .addCase(fetchSeance.pending, (state) => {
-        state.seanceLoading = true;
-        state.seanceError = null;
-      })
-      .addCase(fetchSeance.fulfilled, (state, action) => {
-        state.seanceLoading = false;
-        state.seances = action.payload;
-      })
-      .addCase(fetchSeance.rejected, (state, action) => {
-        state.seanceLoading = false;
-        state.seanceError = action.payload;
-      })
-      // Handling delete and update for seances
-      .addCase(deleteSeanceFromAPI.fulfilled, (state, action) => {
-        // Remove the seance from state by ID
-        state.seances = state.seances.filter((seance) => seance.id !== action.payload);
-      })
-      .addCase(updateSeanceInAPI.fulfilled, (state, action) => {
-        // Find the seance by ID and update it
-        const index = state.seances.findIndex((seance) => seance.id === action.payload.id);
-        if (index !== -1) {
-          state.seances[index] = action.payload;
-        }
-      });
   },
 });
 
@@ -209,6 +147,9 @@ export const {
   addSeance,
   deleteSeance,
   updateSeance,
+  setFormateur,
+  updateSeanceInAPI,  
 } = slice.actions;
+
 
 export default slice.reducer;
